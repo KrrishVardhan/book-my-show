@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stellar Seat Booking | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap");
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #0f172a;
+        color: #f8fafc;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-6 bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div class="w-full max-w-md bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 border border-slate-700/50">
+      <div class="grid grid-cols-2 gap-3 mb-5">
+        <button id="showLogin" class="rounded-xl bg-cyan-500 text-slate-950 font-semibold py-3">Login</button>
+        <button id="showSignup" class="rounded-xl bg-slate-800 text-slate-300 font-semibold py-3 border border-slate-700">Register</button>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <input id="loginUsername" type="text" placeholder="Username" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+        <input id="loginPassword" type="password" placeholder="Password" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+        <button type="submit" class="w-full rounded-xl bg-emerald-500 text-slate-950 font-bold py-3 hover:bg-emerald-400 transition-colors">Sign in</button>
+      </form>
+
+      <form id="signupForm" class="space-y-4 hidden">
+        <input id="signupUsername" type="text" placeholder="Choose a username" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+        <input id="signupPassword" type="password" placeholder="Choose a password" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+        <button type="submit" class="w-full rounded-xl bg-sky-500 text-slate-950 font-bold py-3 hover:bg-sky-400 transition-colors">Create account</button>
+      </form>
+
+      <div id="authMessage" class="mt-5 min-h-12 rounded-xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-slate-400 text-sm"></div>
+    </div>
+
+    <script src="./auth.js"></script>
+  </body>
+</html>

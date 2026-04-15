@@ -16,7 +16,9 @@ import path from "path";
 import loginRouter from "./routes/login.js";
 import signupRouter from "./routes/signup.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const port = process.env.PORT || 8080;
@@ -39,6 +41,7 @@ const pool = new pg.Pool({
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../frontend")));
 app.use(loginRouter(pool));
 app.use(signupRouter(pool));
 
