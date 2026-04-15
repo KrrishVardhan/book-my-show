@@ -6,6 +6,52 @@ const tokenKey = "bookmyshow_token";
 const usernameKey = "bookmyshow_username";
 
 let seats = [];
+let tooltipEl = null;
+
+function ensureTooltip() {
+  if (tooltipEl) {
+    return tooltipEl;
+  }
+
+  tooltipEl = document.createElement("div");
+  tooltipEl.className =
+    "fixed z-9999 pointer-events-none invisible opacity-0 transition-opacity duration-150 px-4 py-2 bg-card border border-border text-sm text-muted-foreground whitespace-nowrap font-normal";
+  tooltipEl.style.borderRadius = "calc(var(--radius) + 4px)";
+  tooltipEl.style.boxShadow = "var(--shadow-2xl)";
+  tooltipEl.innerHTML = `
+    Booked by: <span class="font-bold text-foreground ml-1" data-tooltip-user>Unknown</span>
+  `;
+  document.body.appendChild(tooltipEl);
+  return tooltipEl;
+}
+
+function hideTooltip() {
+  if (!tooltipEl) {
+    return;
+  }
+
+  tooltipEl.classList.add("invisible", "opacity-0");
+  tooltipEl.classList.remove("opacity-100");
+}
+
+function showTooltip(anchor, bookedBy) {
+  const tooltip = ensureTooltip();
+  const userEl = tooltip.querySelector("[data-tooltip-user]");
+
+  if (userEl) {
+    userEl.textContent = bookedBy || "Unknown";
+  }
+
+  const rect = anchor.getBoundingClientRect();
+  const top = Math.max(8, rect.top - 56);
+  const left = rect.left + rect.width / 2;
+
+  tooltip.style.top = `${top}px`;
+  tooltip.style.left = `${left}px`;
+  tooltip.style.transform = "translateX(-50%)";
+  tooltip.classList.remove("invisible", "opacity-0");
+  tooltip.classList.add("opacity-100");
+}
 
 async function readResponse(res) {
   const text = await res.text();
@@ -35,17 +81,6 @@ function syncAuthUi() {
   logoutBtn.classList.toggle("hidden", !username);
 }
 
-function seatTooltip(bookedBy) {
-  return `
-    <span class="relative z-10"></span>
-    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-      Booked by: <span class="font-bold text-white ml-1">${bookedBy || "Unknown"}</span>
-      <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-[6px] border-transparent border-t-slate-700"></div>
-      <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-0.5 border-[5px] border-transparent border-t-slate-900"></div>
-    </div>
-  `;
-}
-
 function renderSeats() {
   tbl.innerHTML = "";
   const sortedSeats = [...seats].sort((a, b) => a.id - b.id);
@@ -60,23 +95,32 @@ function renderSeats() {
     const seat = sortedSeats[index];
     const td = document.createElement("td");
     const baseClasses =
-      "w-28 h-28 md:w-32 md:h-32 rounded-2xl text-center align-middle text-2xl font-bold transition-all duration-300 select-none relative group";
+      "w-28 h-28 md:w-32 md:h-32 text-center align-middle text-2xl font-bold transition-all duration-300 select-none relative";
 
     td.dataset.seatId = seat.id;
     td.dataset.seatName = seat.seat_name;
 
     if (seat.isbooked) {
-      td.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
-      td.innerHTML = `
-        <span class="relative z-10">${seat.seat_name}</span>
-        ${seatTooltip(seat.bookedby)}
-      `;
+      td.className = `${baseClasses} bg-secondary text-secondary-foreground border cursor-not-allowed opacity-60`;
+      td.style.borderRadius = "calc(var(--radius) + 8px)";
+      td.innerHTML = `<span class="relative z-10">${seat.seat_name}</span>`;
+      td.addEventListener("mouseenter", () => showTooltip(td, seat.bookedby));
+      td.addEventListener("mouseleave", hideTooltip);
     } else {
-      td.className = `${baseClasses} bg-emerald-500 text-white border-2 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer hover:bg-emerald-400 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_rgba(16,185,129,0.5)] active:scale-95 active:shadow-[0_0_10px_rgba(16,185,129,0.3)]`;
+      td.className = `${baseClasses} bg-primary text-primary-foreground border border-primary cursor-pointer hover:-translate-y-1.5 hover:z-[20] active:scale-95`;
+      td.style.borderRadius = "calc(var(--radius) + 8px)";
+      td.style.boxShadow = "0 0 20px color-mix(in oklch, var(--primary), transparent 70%)";
+      td.onmouseenter = function() {
+        this.style.boxShadow = "0 10px 25px color-mix(in oklch, var(--primary), transparent 50%)";
+      };
+      td.onmouseleave = function() {
+        this.style.boxShadow = "0 0 20px color-mix(in oklch, var(--primary), transparent 70%)";
+      };
       td.innerHTML = `<span class="relative z-10">${seat.seat_name}</span>`;
     }
 
     td.addEventListener("click", () => bookSeat(seat.id));
+    td.addEventListener("blur", hideTooltip);
     tr.appendChild(td);
   }
 }

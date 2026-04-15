@@ -1,39 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stellar Seat Booking | Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./output.css" rel="stylesheet">
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap");
       body {
         font-family: "Outfit", sans-serif;
-        background-color: #0f172a;
-        color: #f8fafc;
       }
     </style>
   </head>
-  <body class="min-h-screen flex items-center justify-center p-6 bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
-    <div class="w-full max-w-md bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 border border-slate-700/50">
+  <body class="min-h-screen flex items-center justify-center p-6 bg-background text-foreground">
+    <div class="w-full max-w-md bg-card backdrop-blur-xl shadow-2xl p-6 sm:p-8 border border-border" style="border-radius: calc(var(--radius) + 16px)">
       <div class="grid grid-cols-2 gap-3 mb-5">
-        <button id="showLogin" class="rounded-xl bg-cyan-500 text-slate-950 font-semibold py-3">Login</button>
-        <button id="showSignup" class="rounded-xl bg-slate-800 text-slate-300 font-semibold py-3 border border-slate-700">Register</button>
+        <button id="showLogin" class="bg-primary text-primary-foreground font-semibold py-3" style="border-radius: calc(var(--radius) + 8px)">Login</button>
+        <button id="showSignup" class="bg-secondary text-secondary-foreground font-semibold py-3 border border-border" style="border-radius: calc(var(--radius) + 8px)">Register</button>
       </div>
 
       <form id="loginForm" class="space-y-4">
-        <input id="loginUsername" type="text" placeholder="Username" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-        <input id="loginPassword" type="password" placeholder="Password" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-        <button type="submit" class="w-full rounded-xl bg-emerald-500 text-slate-950 font-bold py-3 hover:bg-emerald-400 transition-colors">Sign in</button>
+        <input id="loginUsername" type="text" placeholder="Username" class="w-full bg-input border border-border px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary" style="border-radius: calc(var(--radius) + 8px)" />
+        <input id="loginPassword" type="password" placeholder="Password" class="w-full bg-input border border-border px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary" style="border-radius: calc(var(--radius) + 8px)" />
+        <button type="submit" class="w-full bg-primary text-primary-foreground font-bold py-3 hover:opacity-90 transition-opacity" style="border-radius: calc(var(--radius) + 8px)">Sign in</button>
       </form>
 
       <form id="signupForm" class="space-y-4 hidden">
-        <input id="signupUsername" type="text" placeholder="Choose a username" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-        <input id="signupPassword" type="password" placeholder="Choose a password" class="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-        <button type="submit" class="w-full rounded-xl bg-sky-500 text-slate-950 font-bold py-3 hover:bg-sky-400 transition-colors">Create account</button>
+        <input id="signupUsername" type="text" placeholder="Choose a username" class="w-full bg-input border border-border px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary" style="border-radius: calc(var(--radius) + 8px)" />
+        <input id="signupPassword" type="password" placeholder="Choose a password" class="w-full bg-input border border-border px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary" style="border-radius: calc(var(--radius) + 8px)" />
+        <button type="submit" class="w-full bg-accent text-accent-foreground font-bold py-3 hover:opacity-90 transition-opacity" style="border-radius: calc(var(--radius) + 8px)">Create account</button>
       </form>
 
-      <div id="authMessage" class="mt-5 min-h-12 rounded-xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-slate-400 text-sm"></div>
+      <div id="authMessage" class="mt-5 min-h-12 border border-border bg-background/40 px-4 py-3 text-muted-foreground text-sm" style="border-radius: calc(var(--radius) + 8px)"></div>
     </div>
 
     <script src="./auth.js"></script>
